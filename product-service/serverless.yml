@@ -64,6 +64,11 @@ functions:
           path: /products
           method: get
           cors: false
+          responses:
+            200:
+              description: Receiving list of all products
+            500:
+              description: Internal server error
   getProductById:
     handler: handler.getProductById
     events:
@@ -71,6 +76,13 @@ functions:
           path: /products/{productId}
           method: get
           cors: false
+          responses:
+            200:
+              description: Receiving particular product by id
+            404:
+              description: Product with current id is not found
+            500:
+              description: Internal server error
 
 
 #    Define function environment variables here
@@ -91,6 +103,7 @@ functions:
 
 plugins:
   - serverless-webpack
+  - serverless-auto-swagger
 
 custom:
   webpack:
