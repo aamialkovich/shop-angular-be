@@ -1,18 +1,13 @@
 import { fetchProductsList } from '../mocks/functions/fetchProductsList';
+import { getResponse } from '../utils/getResponse';
+import { errorMessages } from '../utils/errorMessages';
+import { statusCodes } from '../utils/statusCodes';
 
 export const getProductsList = async () => {
   try {
     const products = await fetchProductsList();
-    console.log(products[1]);
-    return {
-      statusCode: 200,
-      body: JSON.stringify(products),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': '*',
-      },
-    };
+    return getResponse(JSON.stringify(products), statusCodes.OK);
   } catch {
-    console.log('some error appeared');
+    getResponse(errorMessages.SERVER_ERROR, statusCodes.SERVER_ERROR);
   }
 };
