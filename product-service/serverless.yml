@@ -89,5 +89,11 @@ functions:
 #       Description: "Description for the output"
 #       Value: "Some output value"
 
-#plugins:
-#  - serverless-webpack
+plugins:
+  - serverless-webpack
+
+custom:
+  webpack:
+    webpackConfig: 'webpack.config.js'
+    packager: 'npm'
+    includeModules: false
