@@ -1,7 +1,7 @@
-import { fetchProductsList } from '../mocks/functions/fetchProductsList';
-import { getResponse } from '../utils/getResponse';
-import { errorMessages } from '../utils/errorMessages';
-import { statusCodes } from '../utils/statusCodes';
+import { fetchProductsList } from '../../mocks/functions/fetchProductsList';
+import { getResponse } from '../../utils/getResponse';
+import { errorMessages } from '../../utils/errorMessages';
+import { statusCodes } from '../../utils/statusCodes';
 
 export const getProductById = async (event) => {
   try {
