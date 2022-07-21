@@ -6,8 +6,10 @@ create table products (
 )
 
 create table stocks (
-  product_id uuid primary key default uuid_generate_v4(),
-  count integer
+  id uuid primary key default uuid_generate_v4(),
+  product_id uuid,
+  count integer,
+  foreign key ("product_id") references "products" ("id")
 )
 
 create extension if not exists "uuid-ossp";
