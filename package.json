@@ -21,7 +21,9 @@
     "url": "https://github.com/aamialkovich/shop-angular-be/issues"
   },
   "homepage": "https://github.com/aamialkovich/shop-angular-be#readme",
-  "dependencies": {},
+  "dependencies": {
+    "pg": "^8.7.3"
+  },
   "devDependencies": {
     "@babel/core": "^7.18.6",
     "@babel/preset-env": "^7.18.6",

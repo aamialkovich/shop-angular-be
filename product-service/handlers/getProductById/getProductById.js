@@ -1,4 +1,4 @@
-import { fetchProductsList } from '../../mocks/functions/fetchProductsList';
+import { fetchProductsList } from '../../db/fetchProductsList';
 import { getResponse } from '../../utils/getResponse';
 import { errorMessages } from '../../utils/errorMessages';
 import { statusCodes } from '../../utils/statusCodes';
