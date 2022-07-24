@@ -1,4 +1,4 @@
-import { fetchProductsList } from '../../db/fetchProductsList';
+import { fetchProductsList } from '../../db/client';
 import { statusCodes } from '../../utils/statusCodes';
 import { getProductsList } from './getProductsList';
 

@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/aamialkovich/shop-angular-be#readme",
   "dependencies": {
+    "joi": "^17.6.0",
     "pg": "^8.7.3"
   },
   "devDependencies": {
