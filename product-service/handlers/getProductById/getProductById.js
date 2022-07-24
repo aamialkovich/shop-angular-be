@@ -1,14 +1,15 @@
 import { getResponse } from '../../utils/getResponse';
 import { statusMessages } from '../../utils/statusMessages';
 import { statusCodes } from '../../utils/statusCodes';
-import { client } from '../../db/client';
+import { pool } from '../../db/pool';
 
 export const getProductById = async (event) => {
+  let clientConnection;
   try {
     const productId = event.pathParameters && event.pathParameters.productId;
     console.log(`Product id ${productId}`)
-    await client.connect();
-    const { rows } = await client.query({
+    clientConnection = await pool.connect();
+    const { rows } = await clientConnection.query({
       text: `SELECT products.id, products.title, products.price, products.description,
         stocks.count FROM products inner join stocks on products.id=stocks.product_id
         WHERE products.id = $1`,
@@ -21,6 +22,6 @@ export const getProductById = async (event) => {
       statusCodes.SERVER_ERROR
     );
   } finally {
-    client.end();
+    clientConnection.release();
   }
 };
