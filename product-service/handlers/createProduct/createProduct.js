@@ -15,19 +15,15 @@ export const createProduct = async (event) => {
       statusCodes.OK
     );
   } catch (e) {
-    switch (e.name) {
-      case 'DatabaseError': {
-        return getResponse(
-          { message: responseMessages.SERVER_ERROR },
-          statusCodes.INTERNAL_SERVER_ERROR
-        );
-      }
-      case 'ValidationError': {
-        return getResponse(
-          { message: responseMessages.INVALID_DATA },
-          statusCodes.BAD_REQUEST
-        );
-      }
+    if (e.name === 'ValidationError') {
+      return getResponse(
+        { message: responseMessages.INVALID_DATA },
+        statusCodes.BAD_REQUEST
+      );
     }
+    return getResponse(
+      { message: responseMessages.SERVER_ERROR },
+      statusCodes.INTERNAL_SERVER_ERROR
+    );
   }
 };

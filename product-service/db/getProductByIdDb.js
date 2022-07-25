@@ -12,9 +12,7 @@ export const getProductByIdDb = async (productId) => {
     });
     return rows[0];
   } catch (e) {
-    throw new Error({
-      name: 'DatabaseError'
-    });
+    throw new Error();
   } finally {
     clientConnection.release();
   }

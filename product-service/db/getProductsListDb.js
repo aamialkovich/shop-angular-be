@@ -9,9 +9,7 @@ export const getProductsListDb = async () => {
     );
     return rows;
   } catch (e) {
-    throw new Error({
-      name: 'DatabaseError',
-    });
+    throw new Error();
   } finally {
     clientConnection.release();
   }

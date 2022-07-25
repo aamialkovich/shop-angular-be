@@ -17,9 +17,7 @@ export const createProductDb = async (product) => {
   } catch {
     if (clientConnection) {
       await clientConnection.query('ROLLBACK');
-      throw new Error({
-        name: 'DatabaseError',
-      });
+      throw new Error();
     }
   } finally {
     clientConnection.release();
