@@ -2,7 +2,7 @@ import { headers } from './headers';
 
 export const getResponse = (body, statusCode) => {
   return {
-    body,
+    body: JSON.stringify(body),
     statusCode,
     headers,
   };
