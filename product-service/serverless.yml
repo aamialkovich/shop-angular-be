@@ -27,11 +27,11 @@ provider:
   region: eu-west-1
 
   environment:
-    PG_HOST:
-    PG_PORT:
-    PG_DATABASE:
-    PG_USERNAME:
-    PG_PASSWORD:
+    PG_HOST: cloud-aws-program.cxq4iag33xql.eu-west-1.rds.amazonaws.com
+    PG_PORT: 5432
+    PG_DATABASE: products
+    PG_USERNAME: postgress
+    PG_PASSWORD: lRPkMs8fyqmnf5p26HYN
 
 # you can add statements to the Lambda function's IAM Role here
 #  iam:
