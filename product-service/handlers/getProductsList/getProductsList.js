@@ -1,13 +1,17 @@
-import { fetchProductsList } from '../../mocks/functions/fetchProductsList';
 import { getResponse } from '../../utils/getResponse';
-import { errorMessages } from '../../utils/errorMessages';
+import { responseMessages } from '../../utils/responseMessages';
 import { statusCodes } from '../../utils/statusCodes';
+import { getProductsListDb } from '../../db/getProductsListDb';
 
 export const getProductsList = async () => {
   try {
-    const products = await fetchProductsList();
-    return getResponse(JSON.stringify(products), statusCodes.OK);
+    console.log('Getting products list');
+    const products = await getProductsListDb();
+    return getResponse(products, statusCodes.OK);
   } catch {
-    getResponse(errorMessages.SERVER_ERROR, statusCodes.SERVER_ERROR);
+    return getResponse(
+      { message: responseMessages.SERVER_ERROR },
+      statusCodes.INTERNAL_SERVER_ERROR
+    );
   }
 };

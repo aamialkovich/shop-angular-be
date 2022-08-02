@@ -1,5 +1,5 @@
 import { getProductById } from './getProductById';
-import { fetchProductsList } from '../../mocks/functions/fetchProductsList';
+import { fetchProductsList } from '../../db/pool';
 import { statusCodes } from '../../utils/statusCodes';
 
 jest.mock('../../mocks/functions/fetchProductsList');

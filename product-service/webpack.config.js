@@ -1,6 +1,7 @@
 const path = require('path');
 const slsw = require('serverless-webpack');
 const nodeExternals = require('webpack-node-externals');
+const webpack = require('webpack');
 
 module.exports = {
   entry: slsw.lib.entries,
@@ -35,4 +36,5 @@ module.exports = {
     filename: '[name].js',
     sourceMapFilename: '[file].map',
   },
+  plugins: [new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ })],
 };

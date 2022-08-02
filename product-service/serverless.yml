@@ -26,6 +26,13 @@ provider:
   stage: dev
   region: eu-west-1
 
+  environment:
+    PG_HOST:
+    PG_PORT:
+    PG_DATABASE:
+    PG_USERNAME:
+    PG_PASSWORD:
+
 # you can add statements to the Lambda function's IAM Role here
 #  iam:
 #    role:
@@ -44,10 +51,6 @@ provider:
 #                - "Ref" : "ServerlessDeploymentBucket"
 #                - "/*"
 
-# you can define service wide environment variables here
-#  environment:
-#    variable1: value1
-
 # you can add packaging information here
 #package:
 #  patterns:
@@ -63,7 +66,7 @@ functions:
       - http:
           path: /products
           method: get
-          cors: false
+          cors: true
           responses:
             200:
               description: Receiving list of all products
@@ -75,7 +78,7 @@ functions:
       - http:
           path: /products/{productId}
           method: get
-          cors: false
+          cors: true
           responses:
             200:
               description: Receiving particular product by id
@@ -83,6 +86,21 @@ functions:
               description: Product with current id is not found
             500:
               description: Internal server error
+  createProduct:
+    handler: handler.createProduct
+    events:
+      - http:
+          path: /products
+          method: post
+          cors: true
+          responses:
+            200:
+              description: Product successfully created
+            400:
+              description: Invalid data was received
+            500:
+              description: Internal server error
+
 
 
 #    Define function environment variables here
