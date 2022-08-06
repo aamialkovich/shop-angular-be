@@ -1,6 +1,9 @@
 import type { AWS } from '@serverless/typescript';
 
 import importProductsFile from '@functions/importProductsFile';
+import importFileParser from '@functions/importFileParser';
+
+const bucketName = 'online-parfum-shop-bucket';
 
 const serverlessConfiguration: AWS = {
   service: 'import-service',
@@ -17,26 +20,26 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      REGION: 'eu-west-1',
+      BUCKET_NAME: bucketName,
+      SRC_FOLDER: 'uploaded',
+      DEST_FOLDER: 'parsed',
     },
-    iam: {
-      role: {
-        statements: [
-          {
-            Effect: 'Allow',
-            Action: ['s3:ListBucket'],
-            Resource: ['arn:aws:s3:::online-parfum-shop']
-          },
-          {
-            Effect: 'Allow',
-            Action: 's3:*',
-            Resource: 'arn:aws:s3:::online-parfum-shop/*'
-          },
-        ],
+    iamRoleStatements: [
+      {
+        Effect: 'Allow',
+        Action: ['s3:ListBucket'],
+        Resource: [`arn:aws:s3:::${bucketName}`],
       },
-    },
+      {
+        Effect: 'Allow',
+        Action: 's3:*',
+        Resource: `arn:aws:s3:::${bucketName}/*`,
+      },
+    ],
   },
   // import the function via paths
-  functions: { importProductsFile },
+  functions: { importProductsFile, importFileParser },
   package: { individually: true },
   custom: {
     esbuild: {
