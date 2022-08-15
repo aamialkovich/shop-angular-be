@@ -6,7 +6,7 @@ import { middyfy } from '@libs/lambda';
 import { HttpCodes } from '@libs/http-codes';
 import { Messages } from '@libs/messages';
 
-const { REGION, BUCKET_NAME, SRC_FOLDER } = process.env;
+const { REGION, S3_BUCKET, SRC_FOLDER } = process.env;
 const s3Client = new S3Client({ region: REGION });
 
 const importProductsFile = async (event) => {
@@ -20,7 +20,7 @@ const importProductsFile = async (event) => {
       );
     }
     const command = new PutObjectCommand({
-      Bucket: BUCKET_NAME,
+      Bucket: S3_BUCKET,
       Key: `${SRC_FOLDER}/${name}`,
     });
     const signedUrl = await getSignedUrl(s3Client, command, {

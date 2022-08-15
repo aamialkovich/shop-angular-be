@@ -4,6 +4,7 @@ import {
   GetObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
+import { SendMessageCommand, SQSClient } from '@aws-sdk/client-sqs';
 import { S3Event } from 'aws-lambda';
 import csv from 'csv-parser';
 
@@ -12,8 +13,9 @@ import { middyfy } from '@libs/lambda';
 import { Messages } from '@libs/messages';
 import { HttpCodes } from '@libs/http-codes';
 
-const { REGION, SRC_FOLDER, DEST_FOLDER } = process.env;
+const { REGION, SRC_FOLDER, DEST_FOLDER, SQS_URL } = process.env;
 const s3Client = new S3Client({ region: REGION });
+const sqsClient = new SQSClient({ region: REGION });
 
 const importFileParser = async (event: S3Event) => {
   try {
@@ -28,7 +30,11 @@ const importFileParser = async (event: S3Event) => {
       await new Promise((resolve) => {
         bucketObject.Body.pipe(csv())
           .on('data', (record) => {
-            console.log(JSON.stringify(record));
+            const command = new SendMessageCommand({
+              QueueUrl: SQS_URL,
+              MessageBody: JSON.stringify(record),
+            });
+            sqsClient.send(command);
           })
           .on('end', resolve);
       });
