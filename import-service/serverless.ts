@@ -23,7 +23,7 @@ const serverlessConfiguration: AWS = {
       S3_BUCKET_ARN: '${file(../config.json):S3_BUCKET_ARN}',
       SRC_FOLDER: 'uploaded',
       DEST_FOLDER: 'parsed',
-      SQS_QUEUE_ARN: '${file(../config.json):SQS_QUEUE_ARN}',
+      SQS_ARN: '${file(../config.json):SQS_ARN}',
       SQS_URL: '${file(../config.json):SQS_URL}'
     },
     iamRoleStatements: [
@@ -40,7 +40,7 @@ const serverlessConfiguration: AWS = {
       {
         Effect: 'Allow',
         Action: 'sqs:*',
-        Resource: '${self:provider.environment.SQS_QUEUE_ARN}',
+        Resource: '${self:provider.environment.SQS_ARN}',
       },
     ],
   },

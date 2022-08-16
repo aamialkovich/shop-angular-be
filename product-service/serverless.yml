@@ -35,6 +35,8 @@ provider:
     REGION: ${file(../config.json):REGION}
     SQS_URL: ${file(../config.json):SQS_URL}
     TOPIC_ARN: ${file(../config.json):TOPIC_ARN}
+    PRIMARY_EMAIL: ${file(../config.json):PRIMARY_EMAIL}
+    SECONDARY_EMAIL: ${file(../config.json):SECONDARY_EMAIL}
 
   iamRoleStatements:
     - Effect: Allow
@@ -145,10 +147,20 @@ resources:
     SNSSubscription:
       Type: AWS::SNS::Subscription
       Properties:
-        Endpoint: aliaksandr_amialkovich@epam.com
+        Endpoint: ${self:provider.environment.PRIMARY_EMAIL}
         Protocol: email
         TopicArn:
           Ref: SNSTopic
+    SNSFilterSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Endpoint: ${self:provider.environment.SECONDARY_EMAIL}
+        Protocol: email
+        TopicArn:
+          Ref: SNSTopic
+        FilterPolicy:
+          creed:
+            - 'true'
 
 
 plugins:
