@@ -18,7 +18,7 @@ const serverlessConfiguration: AWS = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
       USERNAME: '${file(../config.json):USERNAME}',
-      PASSWORD: '${file(../config.json):PASSWORD}'
+      PASSWORD: '${file(../config.json):PASSWORD}',
     },
   },
   // import the function via paths
