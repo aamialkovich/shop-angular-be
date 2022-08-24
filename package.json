@@ -6,6 +6,7 @@
   "scripts": {
     "deploy:product-service": "cd product-service && sls deploy",
     "deploy:import-service": "cd import-service && sls deploy",
+    "deploy:authorization-service": "cd authorization-service && sls deploy",
     "test": "jest",
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --ext .js --fix",
