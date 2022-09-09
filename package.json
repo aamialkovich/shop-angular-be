@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "deploy:product-service": "cd product-service && sls deploy",
+    "deploy:import-service": "cd import-service && sls deploy",
     "test": "jest",
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --ext .js --fix",
     "fix": "npm run lint:fix && npm run prettier:format",
-    "prettier:format": "prettier --config .prettierrc.json  \"**/*.js\" --write"
+    "prettier:format": "prettier --config .prettierrc.json  \"**/*.{js,ts}\" --write"
   },
   "repository": {
     "type": "git",
