@@ -3,8 +3,6 @@ import type { AWS } from '@serverless/typescript';
 import importProductsFile from '@functions/importProductsFile';
 import importFileParser from '@functions/importFileParser';
 
-const bucketName = 'online-parfum-shop-bucket';
-
 const serverlessConfiguration: AWS = {
   service: 'import-service',
   frameworkVersion: '3',
@@ -20,21 +18,29 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
-      REGION: 'eu-west-1',
-      BUCKET_NAME: bucketName,
+      REGION: '${file(../config.json):REGION}',
+      S3_BUCKET: '${file(../config.json):S3_BUCKET}',
+      S3_BUCKET_ARN: '${file(../config.json):S3_BUCKET_ARN}',
       SRC_FOLDER: 'uploaded',
       DEST_FOLDER: 'parsed',
+      SQS_ARN: '${file(../config.json):SQS_ARN}',
+      SQS_URL: '${file(../config.json):SQS_URL}'
     },
     iamRoleStatements: [
       {
         Effect: 'Allow',
         Action: ['s3:ListBucket'],
-        Resource: [`arn:aws:s3:::${bucketName}`],
+        Resource: ['${self:provider.environment.S3_BUCKET_ARN}'],
       },
       {
         Effect: 'Allow',
         Action: 's3:*',
-        Resource: `arn:aws:s3:::${bucketName}/*`,
+        Resource: '${self:provider.environment.S3_BUCKET_ARN}/*',
+      },
+      {
+        Effect: 'Allow',
+        Action: 'sqs:*',
+        Resource: '${self:provider.environment.SQS_ARN}',
       },
     ],
   },

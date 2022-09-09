@@ -5,7 +5,7 @@ export default {
   events: [
     {
       s3: {
-        bucket: 'online-parfum-shop-bucket',
+        bucket: '${self:provider.environment.S3_BUCKET}',
         event: 's3:ObjectCreated:*',
         rules: [
           {

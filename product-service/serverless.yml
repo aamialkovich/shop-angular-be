@@ -27,11 +27,21 @@ provider:
   region: eu-west-1
 
   environment:
-    PG_HOST:
-    PG_PORT:
-    PG_DATABASE:
-    PG_USERNAME:
-    PG_PASSWORD:
+    PG_HOST: ${file(../config.json):PG_HOST}
+    PG_PORT: ${file(../config.json):PG_PORT}
+    PG_DATABASE: ${file(../config.json):PG_DATABASE}
+    PG_USERNAME: ${file(../config.json):PG_USERNAME}
+    PG_PASSWORD: ${file(../config.json):PG_PASSWORD}
+    REGION: ${file(../config.json):REGION}
+    SQS_URL: ${file(../config.json):SQS_URL}
+    TOPIC_ARN: ${file(../config.json):TOPIC_ARN}
+    PRIMARY_EMAIL: ${file(../config.json):PRIMARY_EMAIL}
+    SECONDARY_EMAIL: ${file(../config.json):SECONDARY_EMAIL}
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action: "sns:*"
+      Resource: ${self:provider.environment.TOPIC_ARN}
 
 # you can add statements to the Lambda function's IAM Role here
 #  iam:
@@ -87,7 +97,7 @@ functions:
             500:
               description: Internal server error
   createProduct:
-    handler: handler.createProduct
+    handler: handler.catalogBatchProcess
     events:
       - http:
           path: /products
@@ -100,7 +110,12 @@ functions:
               description: Invalid data was received
             500:
               description: Internal server error
-
+  catalogBatchProcess:
+    handler: handler.catalogBatchProcess
+    events:
+      - sqs:
+          arn: !GetAtt SQSQueue.Arn
+          batchSize: 5
 
 
 #    Define function environment variables here
@@ -118,6 +133,35 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+
+resources:
+  Resources:
+    SQSQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: catalogItemsQueue
+    SNSTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: createProductTopic
+    SNSSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Endpoint: ${self:provider.environment.PRIMARY_EMAIL}
+        Protocol: email
+        TopicArn:
+          Ref: SNSTopic
+    SNSFilterSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Endpoint: ${self:provider.environment.SECONDARY_EMAIL}
+        Protocol: email
+        TopicArn:
+          Ref: SNSTopic
+        FilterPolicy:
+          creed:
+            - 'true'
+
 
 plugins:
   - serverless-webpack
